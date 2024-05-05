@@ -1,36 +1,26 @@
 #!/usr/bin/python3
-"""Tasks Related to API"""
-import requests
-from sys import argv
+"""
+Starting with API
+"""
 
-
-def main(id):
-    """Gets the info and retrives the tasks"""
-    base_url = "https://jsonplaceholder.typicode.com"
-    user_url = "{}/users/{}".format(base_url, id)
-    todo_url = "{}/todos?userId={}".format(base_url, id)
-
-    user = requests.get(user_url).json()
-    todos = requests.get(todo_url).json()
-
-    user_name = user.get("name")
-    total_tasks = len(todos)
-    completed_tasks = [
-        task.get("title") for task in todos if task.get("completed")
-    ]
-    completed_tasks_count = len(completed_tasks)
-
-    print(
-        "Employee {} is done with tasks({}/{}):".format(
-            user_name, completed_tasks_count, total_tasks
-        )
-    )
-
-    for task in completed_tasks:
-        print("\t " + task)
-
-
-if __name__ == "__main__":
-    if len(argv) == 2:
-        id = int(argv[1])
-        main(id)
+if __name__ == '__main__':
+    import requests
+    import sys
+    userid = sys.argv[1]
+    NUMBER_OF_DONE_TASKS = 0
+    TASK_TITLE = []
+    data = requests\
+        .get(f'https://jsonplaceholder.typicode.com/users/{userid}')\
+        .json().get('name')
+    todos = requests\
+        .get(f'https://jsonplaceholder.typicode.com/users/{userid}/todos')\
+        .json()
+    TOTAL_NUMBER_OF_TASKS = len(todos)
+    for tasks in todos:
+        if tasks.get('completed'):
+            NUMBER_OF_DONE_TASKS += 1
+            TASK_TITLE.append(tasks.get('title'))
+    print(f'Employee {data} is done with tasks'
+          f'({NUMBER_OF_DONE_TASKS}/{TOTAL_NUMBER_OF_TASKS}):')
+    for title in TASK_TITLE:
+        print(f'\t {title}')
