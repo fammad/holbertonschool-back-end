@@ -27,3 +27,4 @@ if __name__ == '__main__':
             userid: dicti_list
         }
         f.write(json.dumps(dicti2))
+        
